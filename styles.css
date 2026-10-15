@@ -9,3 +9,139 @@ dialog{background:var(--white);color:var(--ink);border:1px solid var(--line);wid
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.motion-ready .reveal{opacity:1;transform:none}}
 
 @media(max-width:760px){.hero-image{object-position:17% center}}
+
+/* Floating liquid-glass navigation. The opaque base also supports browsers without backdrop blur. */
+header {
+  position: fixed;
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 72px);
+  max-width: 1360px;
+  height: 84px;
+  padding: 0 18px 0 23px;
+  gap: 22px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.85);
+  background: #f4f8f2;
+  box-shadow: 0 12px 40px #0a281b26, inset 0 1px 0 #fff, inset 0 -1px 0 #ffffff80;
+  -webkit-backdrop-filter: blur(26px) saturate(175%);
+  backdrop-filter: blur(26px) saturate(175%);
+  transition: top .35s, height .35s, box-shadow .35s, max-width .35s, background .35s;
+  isolation: isolate;
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  header { background: linear-gradient(135deg,#ffffffe6,#f4fbefb8 48%,#ffffffcf); }
+}
+header::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 3px;
+  border-radius: inherit;
+  border: 1px solid #ffffff60;
+  background: linear-gradient(125deg,#ffffff38,transparent 30%,transparent 70%,#ffffff18);
+  z-index: -1;
+}
+header.scrolled {
+  top: 15px;
+  height: 74px;
+  max-width: 1280px;
+  box-shadow: 0 10px 36px #123b2420, inset 0 1px 0 #fff, inset 0 -1px 0 #ffffff80;
+}
+header .brand { gap: 11px; }
+header .brand img { width: 46px; height: 46px; border-radius: 15px; box-shadow: 0 3px 9px #143c2c22; transition: transform .3s, box-shadow .3s; }
+header .brand:hover img { transform: rotate(-5deg) scale(1.04); box-shadow: 0 5px 14px #143c2c30; }
+header .brand>span { font-size: 18px; }
+header .brand small { font-size: 7px; letter-spacing: .12em; color: #54705d; }
+header .brand small i { display: none; }
+header nav { position: relative; display: flex; align-items: center; gap: 2px; padding: 6px; margin-left: auto; }
+header nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 35px;
+  padding: 12px 14px;
+  color: #3c5c48;
+  font-size: 11px;
+  line-height: 1.4;
+  z-index: 1;
+  transition: color .25s;
+}
+header nav a::after { display: none; }
+header nav a:hover,header nav a.active { color: #123c27; }
+.nav-icon { width: 16px; height: 16px; flex-shrink: 0; stroke-width: 1.65; transition: transform .25s; }
+header nav a:hover .nav-icon { transform: translateY(-1px); }
+.nav-chevron { display: none; }
+.nav-indicator {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  width: 84px;
+  border: 1px solid #ffffffcc;
+  border-radius: 35px;
+  pointer-events: none;
+  background: linear-gradient(140deg,#ffffffde,#dbead393 60%,#ffffff99);
+  box-shadow: 0 3px 12px #1d4d3012, inset 0 1px 1px #fff, inset 0 -1px 1px #8ba48330;
+  transition: transform .45s cubic-bezier(.22,1,.36,1),width .45s cubic-bezier(.22,1,.36,1);
+}
+header .header-enquiry { display: inline-flex; padding: 13px 18px; border-radius: 40px; gap: 10px; font-size: 10px; white-space: nowrap; background: linear-gradient(135deg,#3c825a,#1d5a3e); border-color: #1c573b; box-shadow: inset 0 1px 0 #ffffff50,0 3px 10px #174a3026; }
+.header-enquiry svg { width: 15px; height: 15px; stroke-width: 1.7; }
+.header-enquiry span { font-size: 17px; }
+header .header-enquiry:hover { background: #18593b; }
+.menu-lines { display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 19px; height: 20px; }
+.menu-lines i { width: 19px; height: 1.5px; background: currentColor; border-radius: 2px; transition: transform .25s; }
+.menu-toggle[aria-expanded=true] .menu-lines i:first-child { transform: translateY(3.25px) rotate(45deg); }
+.menu-toggle[aria-expanded=true] .menu-lines i:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+.hero { height: calc(100svh - 35px); min-height: 700px; max-height: 1000px; }
+.hero-content { padding-top: 140px; padding-bottom: 115px; }
+footer .brand img { border-radius: 16px; }
+@media (min-width:1001px) and (max-width:1190px) {
+  header { width: calc(100% - 48px); padding: 0 14px 0 18px; gap: 12px; }
+  header .brand>span { font-size: 16px; }
+  header .brand img { width: 41px; height: 41px; }
+  header nav a { padding: 11px 10px; gap: 6px; font-size: 10px; }
+  header .header-enquiry { padding: 12px 15px; }
+  .header-enquiry svg { display: none; }
+}
+@media (max-width:1000px) {
+  header,header.scrolled { width: calc(100% - 40px); max-width: 700px; height: 78px; padding: 0 17px 0 20px; gap: 15px; }
+  header { top: 50px; }
+  header.scrolled { top: 12px; }
+  header .brand img { width: 43px; height: 43px; }
+  header .brand>span { font-size: 18px; }
+  header .header-enquiry { display: none; }
+  header .menu-toggle { display: flex; align-items: center; justify-content: center; gap: 13px; padding: 11px 14px; margin-left: auto; border: 1px solid #ffffffb3; border-radius: 30px; background: #ffffff6e; box-shadow: inset 0 1px 0 #ffffffa0,0 2px 6px #28492a08; color: var(--ink); font-size: 10px; }
+  header .menu-toggle>span { font-size: 10px; }
+  header nav { position: absolute; display: none; top: calc(100% + 10px); left: auto; right: 0; width: min(360px,100%); padding: 12px; margin: 0; gap: 4px; flex-direction: column; align-items: stretch; border: 1px solid #ffffffd9; border-radius: 28px; background: #f5f9f0; box-shadow: 0 16px 38px #0a281b29,inset 0 1px 0 #fff; -webkit-backdrop-filter: blur(26px) saturate(175%); backdrop-filter: blur(26px) saturate(175%); }
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { header nav { background: linear-gradient(130deg,#fffffff2,#eff7e9e6); } }
+  header nav.open { display: flex; animation: glass-menu-in .25s ease-out; }
+  header nav a { padding: 12px 14px; border: 1px solid transparent; border-radius: 19px; font-size: 13px; gap: 14px; }
+  header nav a.active { background: #ffffffbd; border-color: #fff; box-shadow: 0 2px 8px #163c2d0a; }
+  header nav a:hover { background: #ffffffad; }
+  .nav-icon { width: 19px; height: 19px; }
+  .nav-chevron { display: block; font-size: 17px; margin-left: auto; color: #71906e; }
+  .nav-indicator { display: none; }
+  .hero { min-height: 690px; }
+}
+@media(max-width:760px) {
+  header,header.scrolled { width: calc(100% - 28px); height: 74px; padding: 0 13px 0 15px; gap: 10px; }
+  header { top: 42px; }
+  header.scrolled { top: 10px; }
+  header .brand { gap: 9px; }
+  header .brand img { width: 40px; height: 40px; border-radius: 13px; }
+  header .brand>span { font-size: 16px; }
+  header .brand small { font-size: 6px; letter-spacing: .17em; margin-top: 5px; }
+  header .menu-toggle { padding: 10px 12px; gap: 10px; }
+  .hero { height: calc(100svh - 30px); min-height: 670px; max-height: 950px; }
+  .hero-content { padding: 145px 20px 115px; }
+}
+@media(max-width:370px) {
+  header .brand>span { font-size: 14px; }
+  header .brand img { width: 36px; height: 36px; }
+  header .menu-toggle { padding: 10px; gap: 8px; }
+  .hero { min-height: 640px; }
+}
+@keyframes glass-menu-in { from { opacity: 0; transform: translateY(-8px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media(prefers-reduced-motion:reduce) { header,header *,header *::before { animation: none!important; transition: none!important; } }

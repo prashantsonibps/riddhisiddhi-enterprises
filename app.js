@@ -190,7 +190,7 @@ $('.menu-toggle').addEventListener('click',()=>{
 document.querySelectorAll('#navigation a').forEach(link=>link.addEventListener('click',closeMenu));
 document.addEventListener('click',event=>{if(!event.target.closest('header'))closeMenu();});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'){const wasOpen=$('#navigation').classList.contains('open');closeMenu();if(wasOpen)$('.menu-toggle').focus();}});
-window.matchMedia('(min-width: 761px)').addEventListener('change',event=>{if(event.matches)closeMenu();});
+window.matchMedia('(min-width: 1001px)').addEventListener('change',event=>{if(event.matches)closeMenu();});
 let scrollScheduled=false;
 function updateScroll() {
   const max=document.documentElement.scrollHeight-window.innerHeight;
@@ -207,7 +207,7 @@ if('IntersectionObserver' in window&&!reducedMotion.matches){
   document.querySelectorAll('.reveal').forEach((el,index)=>{el.style.setProperty('--reveal-delay',`${index%3*55}ms`);revealObserver.observe(el);});
 }
 if('IntersectionObserver' in window){
-  const navObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)document.querySelectorAll('#navigation a').forEach(link=>{const active=link.hash==='#'+entry.target.id;link.classList.toggle('active',active);if(active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});}),{rootMargin:'-20% 0px -60% 0px'});
+  const navObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)document.querySelectorAll('#navigation a').forEach(link=>{const active=link.hash==='#'+entry.target.id;link.classList.toggle('active',active);if(active)positionNavIndicator(link);if(active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});}),{rootMargin:'-20% 0px -60% 0px'});
   document.querySelectorAll('main section[id]').forEach(section=>navObserver.observe(section));
 }
 reducedMotion.addEventListener('change',event=>{if(event.matches)document.body.classList.remove('motion-ready');});
@@ -241,3 +241,26 @@ document.querySelectorAll('[data-hero]').forEach(button=>button.addEventListener
   $('#hero-word').textContent=heroSpecialities[button.dataset.hero];
   $('#product-search').value='';setFilter(button.dataset.hero);
 }));
+
+// A shared glass lens follows the current destination and previews pointer/focus movement.
+function positionNavIndicator(link) {
+  const indicator=$('.nav-indicator');
+  if(!indicator||!link||!window.matchMedia('(min-width: 1001px)').matches)return;
+  indicator.style.width=`${link.offsetWidth}px`;
+  indicator.style.transform=`translateX(${link.offsetLeft}px)`;
+}
+const navigation=$('#navigation');
+const currentNavLink=()=>navigation.querySelector('a.active')||navigation.querySelector('a');
+navigation.querySelectorAll('a').forEach(link=>{
+  link.addEventListener('pointerenter',()=>positionNavIndicator(link));
+  link.addEventListener('focus',()=>positionNavIndicator(link));
+  link.addEventListener('click',()=>{
+    navigation.querySelectorAll('a').forEach(item=>{item.classList.toggle('active',item===link);if(item===link)item.setAttribute('aria-current','location');else item.removeAttribute('aria-current');});
+    positionNavIndicator(link);
+  });
+});
+navigation.addEventListener('pointerleave',()=>positionNavIndicator(currentNavLink()));
+navigation.addEventListener('focusout',event=>{if(!navigation.contains(event.relatedTarget))positionNavIndicator(currentNavLink());});
+window.addEventListener('resize',()=>positionNavIndicator(currentNavLink()),{passive:true});
+document.fonts.ready.then(()=>positionNavIndicator(currentNavLink()));
+positionNavIndicator(currentNavLink());
