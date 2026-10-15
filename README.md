@@ -39,6 +39,8 @@ Nine owner-specified ingredients: Sodium hyaluronate; Phenoxyethanol; Ethylhexyl
 
 The website prepares messages for the visitor to review and send using email or WhatsApp. It does not send messages automatically or store personal form submissions. Only ingredient IDs and requested quantities persist in browser localStorage, under `riddhi-siddhi-enquiry`. Basket changes sync between tabs. Corrupt or outdated selections are filtered out. Long emails offer copy/download fallback. Downloads use formula-safe CSV encoding.
 
+Floating WhatsApp and call buttons provide direct contact access throughout the page; labels appear on hover or keyboard focus. Their destinations match the company contact details.
+
 `core.mjs` owns contact destinations and enquiry helpers. `index.html` contains static contacts, metadata, and a non-JavaScript product list. `policies.mjs` contains privacy and terms text. Update all of these if business details change.
 
 ## Design and media
